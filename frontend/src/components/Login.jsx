@@ -9,7 +9,18 @@ import logo from '../assets/justYou-3.png';
 const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = (response) => {
-    console.log(response);
+    // Set to localStorage
+    localStorage.setItem('user', JSON.stringify(response.profileObj));
+    // Create new sanity document in the database for the user
+    const { name, googleId, imageUrl } = response.profileObj;
+    // Fields for document creation
+    const doc = { 
+      // underscore properties define which document sanity is creating
+      _id: googleId,
+      _type: 'user',
+      userName: name,
+      image: imageUrl,
+    }
   }
 
   return (
@@ -29,9 +40,13 @@ const Login = () => {
             <img src={logo} width="180px" alt="logo" />
           </div>
           <div className='shadow-2xl'>
-            <GoogleOAuthProvider>
-              <GoogleLogin 
-                clientId={`${process.env.GOOGLE_OAUTH_CLIENT_ID}`} 
+            {/* 
+              It is safe to have the Google Ouauth client key exposed as it does not grant access tokens,
+              but allows phising scenarios. It will however still have to authorize the fake client in order for it to get a new access token.
+              Detailed explanation: https://mailarchive.ietf.org/arch/msg/oauth/dRiobpjQcdIm95EFqNVfZidxgqc/              
+            */}
+            <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`}>
+              <GoogleLogin  
                 render={(renderProps) => (
                   <button
                     type="button"
