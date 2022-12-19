@@ -45,7 +45,8 @@ const Login = () => {
               but allows phising scenarios. It will however still have to authorize the fake client in order for it to get a new access token.
               Detailed explanation: https://mailarchive.ietf.org/arch/msg/oauth/dRiobpjQcdIm95EFqNVfZidxgqc/              
             */}
-            <GoogleOAuthProvider clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`}>
+            <GoogleOAuthProvider 
+              clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`}>
               <GoogleLogin  
                 render={(renderProps) => (
                   <button
